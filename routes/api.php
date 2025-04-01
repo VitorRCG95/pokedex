@@ -12,7 +12,9 @@ Route::get('/user', function (Request $request) {
 Route::get('/info', function(Request $request){
     return 'Server is Ok!';
 });
-
+//rota para criar o token
 Route::get('/auth', [AuthController::class, 'auth']);
+//rota para consulta a api pokemon e gravar os dados no banco de dados
 Route::get('/getPokemons', [PokemonController::class, 'getPokemons']);
+//rota para consultar um pokemon especifico no banco de dados
 Route::get('/pokemon', [PokemonController::class, 'pokemon']);

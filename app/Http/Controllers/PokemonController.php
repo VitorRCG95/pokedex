@@ -11,6 +11,7 @@ class PokemonController extends Controller
 {
 
     public function getPokemons(Request $request){
+        //verifica token
         $auth = $request->query('token', null);
         if($auth != null){
             $auth = Auth::where('token', $auth)->first();
@@ -20,13 +21,17 @@ class PokemonController extends Controller
         } else {
             return response()->json(['error' => 'Token não encontrado ou invalido']);
         }
+        //busca pokemons no banco de dados
         $getPokemons = Pokemon::pluck('id_pokemon')->toArray();
-        $offset = $request->query('offset', 0); // Padrão: 0
-        $limit = $request->query('limit', 20);  // Padrão: 20
+        $offset = $request->query('offset', 0);
+        $limit = $request->query('limit', 20);
+        //busca pokemons na api pokemon
         $list = PokemonApi::pokemonList('https://pokeapi.co/api/v2/pokemon', $offset, $limit);
         $pokemonInsert = [];
         foreach($list['results'] as $pokemon){
+            //pega a url do pokemon especifico para buscar os dados 
             $pokemonInfo = PokemonApi::pokemonInfo($pokemon['url']);
+            //verifica se o pokemon já está cadastrado no banco de dados
             if(!in_array($pokemonInfo['id'], $getPokemons)){
                 $pokemonInsert[] = [
                     'id_pokemon' => $pokemonInfo['id'],
@@ -50,6 +55,7 @@ class PokemonController extends Controller
     }
 
     public function pokemon(Request $request){
+        //verifica token
         $auth = $request->query('token', null);
         if($auth != null){
             $auth = Auth::where('token', $auth)->first();
@@ -61,6 +67,7 @@ class PokemonController extends Controller
         }
         $id = $request->query('id', 0);
         if($id != 0){
+            //busca pokemon no banco de dados
             $pokemon = Pokemon::where('id_pokemon', $id)->first();
             if($pokemon){
                 return response()->json($pokemon);

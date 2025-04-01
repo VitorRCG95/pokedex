@@ -17,6 +17,7 @@ class AuthController extends Controller
         $verifica = Auth::where('user', $request->getUser())->where('password', $request->getPassword())->first();
         
         if($verifica){
+            //gero um token caso o usuario ja esteja cadastrado
             $credentials = $request->getUser().$request->getPassword();
             $token = base64_encode($credentials);
             Auth::updated(['token' => $token], $verifica->id);
@@ -26,6 +27,7 @@ class AuthController extends Controller
             ]);
 
         } else {
+            //cria o usuario e gera o token
             $credentials = $request->getUser().$request->getPassword();
             $token = base64_encode($credentials);
             Auth::create(['user' => $request->getUser(), 'password' => $request->getPassword(), 'token' => $token]);

@@ -1,0 +1,31 @@
+version: '2.33'
+
+services:
+  app:
+    build: .
+    container_name: laravel_pokedex
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/var/www
+    depends_on:
+      - db_mysql
+    environment:
+      DB_HOST: db_mysql
+      DB_PORT: 3306
+      DB_DATABASE: pokedex
+
+  db_mysql:
+    image: mysql
+    container_name: mysql_pokedex
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: pokedex
+    ports:
+      - "3306:3306"
+    volumes:
+      - dbdata:/var/lib/mysql
+
+volumes:
+  dbdata:

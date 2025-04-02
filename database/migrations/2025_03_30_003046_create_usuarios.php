@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('user');
             $table->string('password');
             $table->string('token');
+            $table->date('validate_token');
             $table->timestamps();
         });
     }

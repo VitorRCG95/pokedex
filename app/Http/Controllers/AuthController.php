@@ -21,9 +21,15 @@ class AuthController extends Controller
             ]);
         }
         $token = $this->service->auth($request->getUser(), $request->getPassword());
-        return response()->json([
-            'token' => $token,
-            'success' => "token gerado com sucesso"
-        ]);
+        if($token){
+            return response()->json([
+                'token' => $token,
+                'success' => "token gerado com sucesso"
+            ]);
+        } else {
+            return response()->json([
+                'error' => 'Usuário ou senha incorretos'
+            ]);
+        }
     } 
 }

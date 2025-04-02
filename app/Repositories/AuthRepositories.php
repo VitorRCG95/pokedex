@@ -14,8 +14,8 @@ class AuthRepositories
     }
 
     //busca o usuario no banco
-    public function getAuth($auth){
-        return $this->model->where('user', $auth['user'])->where('password', $auth['password'])->first();
+    public function getAuth($user){
+        return $this->model->where('user', $user)->first();
     }
 
     //insere o usuario no banco com o token gerado

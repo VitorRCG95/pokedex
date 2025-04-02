@@ -23,11 +23,16 @@ class AuthServices
         $timestamp = time();
         $credentials = $user.$password.$timestamp;
         $token = base64_encode($credentials);
-        $verifica = $this->repository->getAuth($auth);
-        if($verifica){
+        $verifica = $this->repository->getAuth($user);
+        if(!empty($verifica)){
+            if($verifica->password == $password){
+                $this->repository->updateAuth($token, $verifica->id);
+                return $token;
+            } else {
+                return false;
+            }
             //gero um token caso o usuario ja esteja cadastrado            
-            $this->repository->updateAuth($token, $verifica->id);
-            return $token;
+            
         } else {
             //cria o usuario e gera o token
             $this->repository->insertAuth($auth, $token);            

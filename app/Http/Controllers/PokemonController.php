@@ -21,12 +21,9 @@ class PokemonController extends Controller
     public function getPokemons(Request $request){
         $auth = $request->query('token', null);
         if($auth != null){
-            $auth = $this->tokenService->validaToken($auth);
-            if(!$auth){
+            $validaToken = $this->tokenService->validaToken($auth);
+            if(!$validaToken){
                 return response()->json(['error' => 'Token invalido, favor gerar um novo token']);
-            }
-            if(!$auth){
-                return response()->json(['error' => 'Token não encontrado ou invalido']);
             }
         } else {
             return response()->json(['error' => 'Token não encontrado ou invalido']);
@@ -45,12 +42,9 @@ class PokemonController extends Controller
     public function pokemon(Request $request){
         $auth = $request->query('token', null);
         if($auth != null){
-            $auth = $this->tokenService->validaToken($auth);
-            if(!$auth){
+            $validaToken = $this->tokenService->validaToken($auth);
+            if(!$validaToken){
                 return response()->json(['error' => 'Token invalido, favor gerar um novo token']);
-            }
-            if(!$auth){
-                return response()->json(['error' => 'Token não encontrado ou invalido']);
             }
         } else {
             return response()->json(['error' => 'Token não encontrado ou invalido']);

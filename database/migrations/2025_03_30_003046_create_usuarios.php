@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('auth', function (Blueprint $table) {
             $table->id();
-            $table->string('user');
+            $table->string('user')->unique();
             $table->string('password');
             $table->string('token');
             $table->date('validate_token');

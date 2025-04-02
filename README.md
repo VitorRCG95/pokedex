@@ -8,10 +8,10 @@ para instalar e criar os containers e dependencias do projeto
 docker-compose up -d --build
 
 para executar os migrations do projeto laravel
-docker exec -it laravel_app php artisan migrate
+docker exec -it laravel_pokedex php artisan migrate
 
 para gerar a key do laravel
-docker exec -it laravel_app php artisan key:generate
+docker exec -it laravel_pokedex php artisan key:generate
 
 ## Rotas
 

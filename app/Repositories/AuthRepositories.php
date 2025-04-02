@@ -12,10 +12,15 @@ class AuthRepositories
     {
         $this->model = $model;
     }
+
+    //busca o usuario no banco
     public function getAuth($auth){
-        return $this->model->where('user', $auth)->where('password', $auth)->first();
+        return $this->model->where('user', $auth['user'])->where('password', $auth['password'])->first();
     }
+
+    //insere o usuario no banco com o token gerado
     public function insertAuth($auth, $token){
+        
         $this->model->create([
             'user'              => $auth['user'],
             'password'          => $auth['password'],
@@ -24,10 +29,14 @@ class AuthRepositories
         ]);
     }
 
+    //atualiza o token do usuario
     public function updateAuth($token, $id){
-        $this->model->updated(['token' => $token, 'validate_token' => now()->addDay()->format('Y-m-d')], $id);
-    }
+        $this->model->where('id', $id)->update([
+            'token' => $token,
+            'validate_token' => now()->addDay()->format('Y-m-d')
+        ]);    }
 
+    //verifica a validade do token
     public function validateToken($token){
         return $this->model->where('token', $token)->first();
     }

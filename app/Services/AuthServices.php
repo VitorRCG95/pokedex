@@ -13,6 +13,7 @@ class AuthServices
         $this->repository = $repository;
     }
 
+    // função para autenticar o usuario e gerar um token
     public function auth($user, $password)
     {
         $auth = [
@@ -23,34 +24,28 @@ class AuthServices
         $credentials = $user.$password.$timestamp;
         $token = base64_encode($credentials);
         $verifica = $this->repository->getAuth($auth);
-        
         if($verifica){
-            
             //gero um token caso o usuario ja esteja cadastrado            
             $this->repository->updateAuth($token, $verifica->id);
             return $token;
-            /*
-            return response()->json([
-                'token' => $token,
-                'success' => "token gerado com sucesso"
-            ]);
-            */
         } else {
             //cria o usuario e gera o token
-            $this->repository->insertAuth($auth, $token);
-            //Auth::create(['user' => $request->getUser(), 'password' => $request->getPassword(), 'token' => $token]);
-            
+            $this->repository->insertAuth($auth, $token);            
             return $token;
             
         }
     }
 
+    //função para validar o token
     public function validaToken($token){
         $auth = $this->repository->validateToken($token);
-        if($auth['validate_token'] < now()){
-            return true;
-        } else {
-            return false;
+        
+        if(!empty($auth)){
+            if($auth->validate_token > now()){
+                return true;
+            } else {
+                return false;
+            }
         }
     }
     

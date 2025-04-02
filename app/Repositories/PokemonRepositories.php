@@ -18,7 +18,7 @@ class PokemonRepositories
 
     public function getAll()
     {
-        return $this->model->pluck('id_pokedex')->toArray();
+        return $this->model->pluck('id_pokemon')->toArray();
     }
     public function getId(int $id)
     {

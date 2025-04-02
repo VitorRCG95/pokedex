@@ -11,23 +11,10 @@ class PokemonServices {
     {
         $this->repository = $repository;
     }
+
+    //busca os pokemons do banco e os da api, faz um depara e insere os novos pokemons no banco de dados
     public function getPokemons($offset, $limit){
-        //verifica token
-        /*
-        $auth = $request->query('token', null);
-        if($auth != null){
-            $auth = Auth::where('token', $auth)->first();
-            if(!$auth){
-                return response()->json(['error' => 'Token não encontrado ou invalido']);
-            }
-        } else {
-            return response()->json(['error' => 'Token não encontrado ou invalido']);
-        }
-        */
-        //busca pokemons no banco de dados
         $getPokemons = $this->repository->getAll();
-        //$offset = $request->query('offset', 0);
-        //$limit = $request->query('limit', 20);
         //busca pokemons na api pokemon
         $list = PokemonApi::pokemonList('https://pokeapi.co/api/v2/pokemon', $offset, $limit);
         $pokemonInsert = [];
@@ -52,40 +39,23 @@ class PokemonServices {
         if(!empty($pokemonInsert)){
             $this->repository->insertDb($pokemonInsert);
             return true;
-            //return response()->json(['success' => 'Pokemons inseridos com sucesso']);
         } else {
             return false;
-            //return response()->json(['error' => 'Pokémons já cadastrados']);
         }
     }
 
+    //busca um pokemon no banco de dados
     public function pokemon($id){
-        //verifica token
-        /*
-        $auth = $request->query('token', null);
-        if($auth != null){
-            $auth = Auth::where('token', $auth)->first();
-            if(!$auth){
-                return response()->json(['error' => 'Token não encontrado ou invalido']);
-            }
-        } else {
-            return response()->json(['error' => 'Token não encontrado ou invalido']);
-        }
-            */
-        //$id = $request->query('id', 0);
         if($id != 0){
             //busca pokemon no banco de dados
             $pokemon = $this->repository->getId($id);
-            //$pokemon = Pokemon::where('id_pokemon', $id)->first();
             if($pokemon){
                 return $pokemon;
             } else {
                 return false;
-                //return response()->json(['error' => 'Nenhum Pokémon ou Id encontrado']);
             }
         } else {
             return false;
-            //return response()->json(['error' => 'Nenhum Pokémon ou Id encontrado']);
         }
        
     }
